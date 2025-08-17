@@ -133,4 +133,4 @@ if __name__ == "__main__":
 #         sys.exit(2)
 #     run_login_test(sys.argv[1])
 # =============================================================================
-    run_login_test("vesselpg._.rainypg._.voltarpg")
+    run_login_test(ENV["ACCOUNTS"])
