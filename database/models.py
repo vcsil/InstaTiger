@@ -57,6 +57,7 @@ class Account(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     username: Mapped[str] = mapped_column(String(30), unique=True, index=True)
+    ig_pk: Mapped[Optional[int]] = mapped_column(BigInteger, unique=True)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False,
                                             server_default=sa.text("true"))
     created_at: Mapped[datetime] = mapped_column(
@@ -81,6 +82,7 @@ class Target(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     handle: Mapped[str] = mapped_column(String(30), unique=True, index=True)
+    ig_pk: Mapped[Optional[int]] = mapped_column(BigInteger, unique=True)
     source_type: Mapped[SourceTypes] = mapped_column(
         Enum(SourceTypes, name="source_types", native_enum=True),
         nullable=False, index=True)
@@ -90,6 +92,8 @@ class Target(Base):
         default=lambda: datetime.now(timezone.utc),
         server_default=sa.text("timezone('utc', now())"))
 
+    __table_args__ = (Index("uq_targets_ig_pk_not_null", "ig_pk", unique=True,
+                            postgresql_where=sa.text("ig_pk IS NOT NULL")),)
     actions: Mapped[List["ActionLog"]] = relationship(back_populates="target")
     relationships: Mapped[List["Relationship"]] = relationship(
         back_populates="target")
