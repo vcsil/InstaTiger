@@ -59,7 +59,7 @@ def main():
         else:
             sufix = ":password" if cred_type == "senha" else ":sessionid"
 
-        set_cred(service, username, secret)
+        set_cred(service, username, secret, sufix)
         return
 
     accounts = ENV["DB_NAME"] + "," + ENV["ACCOUNTS"]
